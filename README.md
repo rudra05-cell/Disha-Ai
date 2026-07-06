@@ -34,13 +34,20 @@ Disha AI was built because **we are this student.** We built the tool we needed 
 Disha AI is a **multi-agent life navigation system** that walks with Indian students at every major crossroads of their educational journey:
 
 ```
-CLASS 10  →  "Which stream? Science / Commerce / Arts / Diploma / ITI?"
-    ↓
-CLASS 12  →  "JEE / NEET / Direct admission / Gap year / Skills?"
-    ↓
-GRADUATION →  "Job / GATE / MBA / MS abroad / Startup?"
-    ↓
-STUCK/LOST →  "I have no interest in anything. What do I do?"
+SECONDARY TRANSITION (Class 10 Completion)
+   │
+   ▼ Stream Stratification Mapping (Science, Commerce, Humanities, or Applied Vocational Tracks)
+   │
+SENIOR SECONDARY PIVOT (Class 12 Completion)
+   │
+   ▼ Multi-Channel Alignment (National Entrances, Professional Foundations, Creative Design, or Direct Degree Formats)
+   │
+TERTIARY GRADUATION LOOP (Undergraduate Completion)
+   │
+   ▼ Strategic Career Routing (Corporate Placement, Post-Graduate Research, Specialized Diplomas, or International Specialization)
+   │
+ACUTE STAGNATION STATE (Lost / Unsure Target Alignment)
+   ▼ Behavioral Trajectory Calibration (Decompression, Latent Focus Mapping, and Immediate Action Deployment)
 ```
 
 Unlike existing tools that give a one-time psychometric test and disappear, **Disha remembers you.** Every session is saved locally. When you return, Disha knows your name, your family situation, what you decided last time, and how your life has changed.
@@ -49,75 +56,70 @@ Unlike existing tools that give a one-time psychometric test and disappear, **Di
 
 ## Architecture — ADK 2.0 Graph Workflow
 
-```
 ╔═══════════════════════════════════════════════════════════════════════════╗
-║                     DISHA AI — SYSTEM ARCHITECTURE                       ║
+║                     DISHA AI — SYSTEM ARCHITECTURE                        ║
 ╠═══════════════════════════════════════════════════════════════════════════╣
 ║                                                                           ║
-║   Student opens Streamlit UI                                              ║
+║   Student opens Streamlit UI Interface                                    ║
 ║           │                                                               ║
 ║           ▼                                                               ║
-║   ┌───────────────────────────────────────────────────────────────────┐  ║
-║   │              ADK 2.0 GRAPH WORKFLOW (root\\\_agent)                  │  ║
-║   │   Workflow(name="disha\\\_ai", edges=\\\[...])                          │  ║
-║   │                                                                   │  ║
-║   │  START                                                            │  ║
-║   │    │                                                              │  ║
-║   │    ▼                                                              │  ║
-║   │  \\\[NODE 1] life\\\_stage\\\_detector (gemini-2.5-flash)                 │  ║
-║   │    • Warm conversation — 7 key questions                          │  ║
-║   │    • Detects: stage, category, income, family, stress             │  ║
-║   │    • Output: LifeContext JSON                                     │  ║
-║   │    │                                                              │  ║
-║   │    ▼                                                              │  ║
-║   │  \\\[NODE 2] interest\\\_discovery (gemini-2.5-flash)                  │  ║
-║   │    • Behavioural questioning — NOT "what are you interested in?"  │  ║
-║   │    • "When did you last forget to eat? What were you doing?"      │  ║
-║   │    • Reveals LATENT interests from actions and emotions           │  ║
-║   │    • Handles "I have no interest" — the most common case         │  ║
-║   │    • Output: InterestProfile JSON                                 │  ║
-║   │    │                                                              │  ║
-║   │    ▼                                                              │  ║
-║   │  \\\[NODE 3] india\\\_navigator (gemini-2.5-flash + Google Search)     │  ║
-║   │    • Searches REAL current data — not hardcoded                   │  ║
-║   │    • Finds actual scholarships for their category/state           │  ║
-║   │    • Finds real GATE SC cutoffs, JEE cutoffs, salary data         │  ║
-║   │    • Finds government schemes they qualify for                    │  ║
-║   │    • Output: OpportunityMap JSON with live data                   │  ║
-║   │    │                                                              │  ║
-║   │    ▼                                                              │  ║
-║   │  \\\[NODE 4] path\\\_architect (gemini-2.5-flash)                      │  ║
-║   │    • Synthesises ALL previous outputs                             │  ║
-║   │    • Generates exactly 2 honest, specific paths                   │  ║
-║   │    • Includes hard truths: family separation, cost, time          │  ║
-║   │    • Makes ONE clear recommendation — never "it depends"          │  ║
-║   │    • Speaks in warm Hindi-English mix                             │  ║
-║   │    │                                                              │  ║
-║   │    ▼                                                              │  ║
-║   │  \\\[NODE 5] first\\\_step\\\_coach (gemini-2.5-flash + MCP FILESYSTEM)   │  ║
-║   │    │                                                              │  ║
-║   │    │  ┌─────────────────────────────────────────────────────┐    │  ║
-║   │    │  │   MCP LOCAL FILESYSTEM SERVER                        │    │  ║
-║   │    │  │   npx @modelcontextprotocol/server-filesystem        │    │  ║
-║   │    │  │   Sandboxed to: ./disha\\\_agent/memory\\\_store/          │    │  ║
-║   │    │  │                                                      │    │  ║
-║   │    │  │   read\\\_file("student\\\_journal.json")  → past history  │    │  ║
-║   │    │  │   write\\\_file("student\\\_journal.json") → new session   │    │  ║
-║   │    │  └─────────────────────────────────────────────────────┘    │  ║
-║   │    │                                                              │  ║
-║   │    │  ANTIGRAVITY HARNESS (embedded):                            │  ║
-║   │    │  IF stress\\\_score ≥ 7 OR overwhelm detected:                 │  ║
-║   │    │    → MICRO-STEP MODE: Give ONE tiny action only             │  ║
-║   │    │    → Re-test: "Kya ye kar sakte ho?"                        │  ║
-║   │    │    → If still paralysed → human support recommendation      │  ║
-║   │    │                                                              │  ║
-║   │    • Gives ONE specific action for this week                      │  ║
-║   │    • Writes session to student\\\_journal.json via MCP              │  ║
-║   │    • Reads past sessions to provide continuity                    │  ║
-║   │    │                                                              │  ║
-║   │    ▼                                                              │  ║
-║   │   END                                                             │  ║
-║   └───────────────────────────────────────────────────────────────────┘  ║
+║   ┌───────────────────────────────────────────────────────────────────┐   ║
+║   │              ADK 2.0 GRAPH WORKFLOW (root_agent)                  │   ║
+║   │   Workflow(name="disha_ai", edges=[...])                          │   ║
+║   │                                                                   │   ║
+║   │  START                                                            │   ║
+║   │    │                                                              │   ║
+║   │    ▼                                                              │   ║
+║   │  [NODE 1] stage_router (gemini-2.5-flash)                         │   ║
+║   │    • Multi-turn synchronous task profiling execution              │   ║
+║   │    • Extracts: Life Stage, Category, Income, Spatial, Stress      │   ║
+║   │    • Output: Sanitized LifeContext JSON Payload                   │   ║
+║   │    │                                                              │   ║
+║   │    ▼                                                              │   ║
+║   │  [NODE 2] interest_discovery (gemini-2.5-flash)                   │   ║
+║   │    • Behavioral Elicitation (Bypasses stated preference bias)     │   ║
+║   │    • Probes: Absorption, Social Competency, Revealed Consumption  │   ║
+║   │    • Classification: Maps input into 11 Cognitive Token Clusters  │   ║
+║   │    • Output: InterestProfile JSON Appended State                  │   ║
+║   │    │                                                              │   ║
+║   │    ▼                                                              │   ║
+║   │  [NODE 3] india_opportunity_finder (gemini-2.5-flash + Search UI) │   ║
+║   │    • Target Runtime Context Expansion (Live API Ingestion)        │   ║
+║   │    • Dynamically resolves localized statutory aid & scholarships  │   ║
+║   │    • Pulls active domain entrance rules, cutoffs & job metrics    │   ║
+║   │    • Output: Localized OpportunityMap JSON Data Structure         │   ║
+║   │    │                                                              │   ║
+║   │    ▼                                                              │   ║
+║   │  [NODE 4] path_architect (gemini-2.5-flash)                       │   ║
+║   │    • Multi-variable optimization pass across all disciplines      │   ║ 
+║   │    • Generates: Path A (Risk-Mitigated) & Path B (High Upside)    │   ║
+║   │    • Includes hard realities: logistics, resource cost, timelines │   ║
+║   │    • Enforces deterministic, singular optimization advice         │   ║
+║   │    │                                                              │   ║
+║   │    ▼                                                              │   ║
+║   │  [NODE 5] first_step_coach (gemini-2.5-flash + MCP FILESYSTEM)    │   ║
+║   │    │                                                              │   ║
+║   │    │  ┌─────────────────────────────────────────────────────┐     │   ║
+║   │    │  │   MCP LOCAL FILESYSTEM SERVER INTERFACE             │     │   ║ 
+║   │    │  │   npx @modelcontextprotocol/server-filesystem       │     │   ║
+║   │    │  │   Sandboxed to: ./disha_agent/memory_store/         │     │   ║
+║   │    │  │                                                     │     │   ║
+║   │    │  │   read_file("student_journal.json")  → Past Session │     │   ║
+║   │    │  │   write_file("student_journal.json") → State Sync   │     │   ║
+║   │    │  └─────────────────────────────────────────────────────┘     │   ║
+║   │    │                                                              │   ║
+║   │    │  ANTIGRAVITY HARNESS GOVERNOR (Embedded):                    │   ║
+║   │    │  IF psychometric_stress >= 7 -> ENGAGE MICRO-STEP MODE       │   ║
+║   │    │    → Suppresses roadmap complexity down to <5min bounds      │   ║
+║   │    │    → IF stress >= 9 -> Intercept, Freeze Pipeline Advisory   │   ║
+║   │    │      → Reroute to multilingual human crisis network (iCall)  │   ║
+║   │    │                                                              │   ║
+║   │    • Computes granular operational execution target               │   ║
+║   │    • Commits session summary transaction via sandboxed MCP        │   ║
+║   │    │                                                              │   ║
+║   │    ▼                                                              │   ║
+║   │   END                                                             │   ║
+║   └───────────────────────────────────────────────────────────────────┘   ║
 ║                                                                           ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
 ```
@@ -126,7 +128,7 @@ Unlike existing tools that give a one-time psychometric test and disappear, **Di
 
 ## Course Rubric — All 6 Concepts Demonstrated
 
-### ✅ 1. ADK Multi-Agent System (Graph Workflow)
+###  1. ADK Multi-Agent System (Graph Workflow)
 
 ```python
 from google.adk import Agent, Workflow
@@ -146,7 +148,7 @@ root\\\_agent = Workflow(
 
 Five distinct agents. Five distinct jobs. A directed graph where each edge is architecturally necessary. This is not a chatbot — it's a deterministic multi-agent pipeline.
 
-### ✅ 2. MCP Server Integration
+###  2. MCP Server Integration
 
 ```python
 from google.adk.tools.mcp\\\_tool.mcp\\\_toolset import MCPToolset
@@ -165,24 +167,24 @@ mcp\\\_memory\\\_toolset = MCPToolset(
 
 The MCP filesystem server gives `first\\\_step\\\_coach` the ability to read and write the student's life journal — creating genuine long-term memory that persists across sessions, months, and life stages.
 
-### ✅ 3. Antigravity Harness
+###  3. Antigravity Harness
 
 Embedded in `first\\\_step\\\_coach`. Detects three signals: confusion, overwhelm, and paralysis. On detection, re-routes to Micro-Step Mode — giving the smallest possible action instead of a full plan. Re-tests for clarity. If student remains paralysed after maximum attempts, recommends human support.
 
-### ✅ 4. Security
+###  4. Security
 
 * All student data stays on their local machine — never uploaded anywhere
 * MCP server is sandboxed to `./memory\\\_store/` directory only
 * No API keys in code — environment variables only via `.env`
 * No third-party data collection
 
-### ✅ 5. Long-term Memory (Sessions)
+###  5. Long-term Memory (Sessions)
 
 * `InMemorySessionService` for current conversation state
 * MCP filesystem for cross-session persistent memory
 * `student\\\_journal.json` accumulates every session — Disha remembers you across months
 
-### ✅ 6. Agent Skills with Web Search
+###  6. Agent Skills with Web Search
 
 `india\\\_navigator` uses `google\\\_search` tool to fetch real-time data — actual scholarship deadlines, live GATE cutoffs, current salary ranges. Not hardcoded knowledge. Real data at query time.
 
