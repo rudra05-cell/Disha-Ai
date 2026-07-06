@@ -57,69 +57,69 @@ Unlike existing tools that give a one-time psychometric test and disappear, **Di
 ## Architecture — ADK 2.0 Graph Workflow
 
 ╔═══════════════════════════════════════════════════════════════════════════╗
-║                     DISHA AI — SYSTEM ARCHITECTURE                        ║
+║                     DISHA AI — SYSTEM ARCHITECTURE                       ║
 ╠═══════════════════════════════════════════════════════════════════════════╣
 ║                                                                           ║
 ║   Student opens Streamlit UI Interface                                    ║
 ║           │                                                               ║
 ║           ▼                                                               ║
-║   ┌───────────────────────────────────────────────────────────────────┐   ║
-║   │              ADK 2.0 GRAPH WORKFLOW (root_agent)                  │   ║
-║   │   Workflow(name="disha_ai", edges=[...])                          │   ║
-║   │                                                                   │   ║
-║   │  START                                                            │   ║
-║   │    │                                                              │   ║
-║   │    ▼                                                              │   ║
-║   │  [NODE 1] stage_router (gemini-2.5-flash)                         │   ║
-║   │    • Multi-turn synchronous task profiling execution              │   ║
-║   │    • Extracts: Life Stage, Category, Income, Spatial, Stress      │   ║
-║   │    • Output: Sanitized LifeContext JSON Payload                   │   ║
-║   │    │                                                              │   ║
-║   │    ▼                                                              │   ║
-║   │  [NODE 2] interest_discovery (gemini-2.5-flash)                   │   ║
-║   │    • Behavioral Elicitation (Bypasses stated preference bias)     │   ║
-║   │    • Probes: Absorption, Social Competency, Revealed Consumption  │   ║
-║   │    • Classification: Maps input into 11 Cognitive Token Clusters  │   ║
-║   │    • Output: InterestProfile JSON Appended State                  │   ║
-║   │    │                                                              │   ║
-║   │    ▼                                                              │   ║
-║   │  [NODE 3] india_opportunity_finder (gemini-2.5-flash + Search UI) │   ║
-║   │    • Target Runtime Context Expansion (Live API Ingestion)        │   ║
-║   │    • Dynamically resolves localized statutory aid & scholarships  │   ║
-║   │    • Pulls active domain entrance rules, cutoffs & job metrics    │   ║
-║   │    • Output: Localized OpportunityMap JSON Data Structure         │   ║
-║   │    │                                                              │   ║
-║   │    ▼                                                              │   ║
-║   │  [NODE 4] path_architect (gemini-2.5-flash)                       │   ║
-║   │    • Multi-variable optimization pass across all disciplines      │   ║ 
-║   │    • Generates: Path A (Risk-Mitigated) & Path B (High Upside)    │   ║
-║   │    • Includes hard realities: logistics, resource cost, timelines │   ║
-║   │    • Enforces deterministic, singular optimization advice         │   ║
-║   │    │                                                              │   ║
-║   │    ▼                                                              │   ║
-║   │  [NODE 5] first_step_coach (gemini-2.5-flash + MCP FILESYSTEM)    │   ║
-║   │    │                                                              │   ║
-║   │    │  ┌─────────────────────────────────────────────────────┐     │   ║
-║   │    │  │   MCP LOCAL FILESYSTEM SERVER INTERFACE             │     │   ║ 
-║   │    │  │   npx @modelcontextprotocol/server-filesystem       │     │   ║
-║   │    │  │   Sandboxed to: ./disha_agent/memory_store/         │     │   ║
-║   │    │  │                                                     │     │   ║
-║   │    │  │   read_file("student_journal.json")  → Past Session │     │   ║
-║   │    │  │   write_file("student_journal.json") → State Sync   │     │   ║
-║   │    │  └─────────────────────────────────────────────────────┘     │   ║
-║   │    │                                                              │   ║
-║   │    │  ANTIGRAVITY HARNESS GOVERNOR (Embedded):                    │   ║
-║   │    │  IF psychometric_stress >= 7 -> ENGAGE MICRO-STEP MODE       │   ║
-║   │    │    → Suppresses roadmap complexity down to <5min bounds      │   ║
-║   │    │    → IF stress >= 9 -> Intercept, Freeze Pipeline Advisory   │   ║
-║   │    │      → Reroute to multilingual human crisis network (iCall)  │   ║
-║   │    │                                                              │   ║
-║   │    • Computes granular operational execution target               │   ║
-║   │    • Commits session summary transaction via sandboxed MCP        │   ║
-║   │    │                                                              │   ║
-║   │    ▼                                                              │   ║
-║   │   END                                                             │   ║
-║   └───────────────────────────────────────────────────────────────────┘   ║
+║   ┌───────────────────────────────────────────────────────────────────┐  ║
+║   │              ADK 2.0 GRAPH WORKFLOW (root_agent)                  │  ║
+║   │   Workflow(name="disha_ai", edges=[...])                          │  ║
+║   │                                                                   │  ║
+║   │  START                                                            │  ║
+║   │    │                                                              │  ║
+║   │    ▼                                                              │  ║
+║   │  [NODE 1] stage_router (gemini-2.5-flash)                         │  ║
+║   │    • Multi-turn synchronous task profiling execution              │  ║
+║   │    • Extracts: Life Stage, Category, Income, Spatial, Stress      │  ║
+║   │    • Output: Sanitized LifeContext JSON Payload                   │  ║
+║   │    │                                                              │  ║
+║   │    ▼                                                              │  ║
+║   │  [NODE 2] interest_discovery (gemini-2.5-flash)                   │  ║
+║   │    • Behavioral Elicitation (Bypasses stated preference bias)      │  ║
+║   │    • Probes: Absorption, Social Competency, Revealed Consumption  │  ║
+║   │    • Classification: Maps input into 11 Cognitive Token Clusters │  ║
+║   │    • Output: InterestProfile JSON Appended State                  │  ║
+║   │    │                                                              │  ║
+║   │    ▼                                                              │  ║
+║   │  [NODE 3] india_opportunity_finder (gemini-2.5-flash + Search UI) │  ║
+║   │    • Target Runtime Context Expansion (Live API Ingestion)        │  ║
+║   │    • Dynamically resolves localized statutory aid & scholarships  │  ║
+║   │    • Pulls active domain entrance rules, cutoffs & job metrics    │  ║
+║   │    • Output: Localized OpportunityMap JSON Data Structure         │  ║
+║   │    │                                                              │  ║
+║   │    ▼                                                              │  ║
+║   │  [NODE 4] path_architect (gemini-2.5-flash)                       │  ║
+║   │    • Multi-variable optimization pass across all disciplines      │  ║
+║   │    • Generates: Path A (Risk-Mitigated) & Path B (High Upside)    │  ║
+║   │    • Includes hard realities: logistics, resource cost, timelines  │  ║
+║   │    • Enforces deterministic, singular optimization advice        │  ║
+║   │    │                                                              │  ║
+║   │    ▼                                                              │  ║
+║   │  [NODE 5] first_step_coach (gemini-2.5-flash + MCP FILESYSTEM)    │  ║
+║   │    │                                                              │  ║
+║   │    │  ┌─────────────────────────────────────────────────────┐    │  ║
+║   │    │  │   MCP LOCAL FILESYSTEM SERVER INTERFACE              │    │  ║
+║   │    │  │   npx @modelcontextprotocol/server-filesystem        │    │  ║
+║   │    │  │   Sandboxed to: ./disha_agent/memory_store/          │    │  ║
+║   │    │  │                                                      │    │  ║
+║   │    │  │   read_file("student_journal.json")  → Past Session  │    │  ║
+║   │    │  │   write_file("student_journal.json") → State Sync   │    │  ║
+║   │    │  └─────────────────────────────────────────────────────┘    │  ║
+║   │    │                                                              │  ║
+║   │    │  ANTIGRAVITY HARNESS GOVERNOR (Embedded):                    │  ║
+║   │    │  IF psychometric_stress >= 7 -> ENGAGE MICRO-STEP MODE       │  ║
+║   │    │    → Suppresses roadmap complexity down to <5min bounds       │  ║
+║   │    │    → IF stress >= 9 -> Intercept, Freeze Pipeline Advisory    │  ║
+║   │    │      → Reroute to multilingual human crisis network (iCall)  │  ║
+║   │    │                                                              │  ║
+║   │    • Computes granular operational execution target               │  ║
+║   │    • Commits session summary transaction via sandboxed MCP        │  ║
+║   │    │                                                              │  ║
+║   │    ▼                                                              │  ║
+║   │   END                                                             │  ║
+║   └───────────────────────────────────────────────────────────────────┘  ║
 ║                                                                           ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
 ```
