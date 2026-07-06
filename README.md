@@ -57,7 +57,7 @@ Unlike existing tools that give a one-time psychometric test and disappear, **Di
 ## Architecture — ADK 2.0 Graph Workflow
 
 ╔═══════════════════════════════════════════════════════════════════════════╗
-║                     DISHA AI — SYSTEM ARCHITECTURE                       ║
+║                     DISHA AI — SYSTEM ARCHITECTURE                        ║
 ╠═══════════════════════════════════════════════════════════════════════════╣
 ║                                                                           ║
 ║   Student opens Streamlit UI Interface                                    ║
