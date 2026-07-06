@@ -57,7 +57,7 @@ Unlike existing tools that give a one-time psychometric test and disappear, **Di
 ## Architecture — ADK 2.0 Graph Workflow
 
 ╔═══════════════════════════════════════════════════════════════════════════╗
-║                     DISHA AI — SYSTEM ARCHITECTURE                        ║
+║                     DISHA AI — SYSTEM ARCHITECTURE                      ║
 ╠═══════════════════════════════════════════════════════════════════════════╣
 ║                                                                           ║
 ║   Student opens Streamlit UI Interface                                    ║
@@ -281,7 +281,7 @@ adk run disha\\\_agent
 |-|-|-|
 |Rahul, 16, Class 10|Confused between Science and Commerce|Discovers his interest in systems and money → recommends Commerce with CS → finds scholarship|
 |Priya, 18, Class 12|JEE rank not good enough for IIT|Uncovers interest in biology → maps NEET options + AIIMS → finds state government scholarship|
-|Rudra, 22, BE Final|GATE vs Job vs Germany — completely paralysed|SC category advantage revealed → GATE dual-track recommended → Rajiv Gandhi Fellowship identified|
+|Ram, 22, BE Final|GATE vs Job vs Germany — completely paralysed|SC category advantage revealed → GATE dual-track recommended → Rajiv Gandhi Fellowship identified|
 |Ananya, 24, Graduated|No direction, lost, stressed|Interest in helping people discovered through questioning → social work + MBA in HR → first step given|
 |Karan, 15, Class 10|"I have zero interests"|Behavioural questions reveal he fixes everything that breaks → Mechanical/Electronics path|
 
