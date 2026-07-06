@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Disha AI - Life Navigation for Indian Students</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=&apos;http://www.w3.org/2000/svg&apos; viewBox=&apos;0 0 100 100&apos;><text y=&apos;.9em&apos; font-size=&apos;90&apos;>🧭</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07071a;--bg2:#0e0e28;--bg3:#14143a;--bg4:#1a1a48;
+  --acc:#7c6af7;--acc2:#a594ff;--acc-g:rgba(124,106,247,.2);
+  --txt:#f0f0ff;--txt2:#9090b8;--txt3:#5a5a80;
+  --bd:rgba(124,106,247,.18);--bd2:rgba(255,255,255,.06);
+  --green:#4ade80;--yellow:#fbbf24;--red:#f87171;
+  --r:14px;--r2:8px;
+}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt);overflow:hidden}
+.app{display:grid;grid-template-columns:270px 1fr;height:100vh}
+.sidebar{background:var(--bg2);border-right:1px solid var(--bd2);display:flex;flex-direction:column;padding:20px 16px;overflow-y:auto;gap:18px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--acc),#a855f7);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 20px var(--acc-g);flex-shrink:0}
+.logo h1{font-size:17px;font-weight:700}
+.logo p{font-size:10px;color:var(--acc2);text-transform:uppercase;letter-spacing:.06em}
+.new-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--acc),#a855f7);border:none;border-radius:var(--r2);color:#fff;font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s,transform .1s}
+.new-btn:hover{opacity:.88;transform:translateY(-1px)}
+.sl{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:7px}
+.qs{display:flex;flex-direction:column;gap:5px}
+.qs-btn{padding:9px 12px;background:var(--bg3);border:1px solid var(--bd2);border-radius:var(--r2);color:var(--txt2);font-size:12px;cursor:pointer;text-align:left;transition:all .15s;line-height:1.4}
+.qs-btn:hover{background:var(--bg4);border-color:var(--bd);color:var(--txt)}
+.lps{display:flex;flex-wrap:wrap;gap:4px}
+.lp{padding:2px 7px;background:var(--bg4);border:1px solid var(--bd);border-radius:20px;font-size:10px;color:var(--acc2)}
+.stats{margin-top:auto;padding-top:14px;border-top:1px solid var(--bd2)}
+.stat{display:flex;justify-content:space-between;padding:5px 0;font-size:11px}
+.stat-l{color:var(--txt3)} .stat-v{color:var(--acc2);font-weight:600;font-family:monospace}
+.main{display:flex;flex-direction:column;height:100vh;min-width:0}
+.topbar{padding:14px 22px;background:var(--bg2);border-bottom:1px solid var(--bd2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tb-l{display:flex;align-items:center;gap:10px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;flex-shrink:0}
+.dot.idle{background:var(--txt3);box-shadow:none;animation:none}
+.dot.thinking{background:var(--yellow);box-shadow:0 0 8px var(--yellow)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.tb-title{font-size:14.5px;font-weight:600}
+.tb-sub{font-size:11px;color:var(--txt3)}
+.badge{padding:4px 12px;background:var(--bg3);border:1px solid var(--bd);border-radius:20px;font-size:11px;color:var(--acc2);font-weight:500}
+.msgs{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;gap:16px;padding:40px}
+.wi{font-size:56px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.wt{font-size:26px;font-weight:700;background:linear-gradient(135deg,var(--acc2),#e879f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wd{font-size:14px;color:var(--txt2);max-width:380px;line-height:1.65}
+.ws{padding:7px 18px;background:var(--bg3);border:1px solid var(--bd);border-radius:20px;font-size:12.5px;color:var(--txt2)}
+.ws strong{color:var(--acc2)}
+.wh{font-size:12px;color:var(--txt3)}
+.msg{display:flex;flex-direction:column;max-width:76%;animation:si .18s ease}
+@keyframes si{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.disha{align-self:flex-start} .msg.user{align-self:flex-end}
+.mm{font-size:10.5px;color:var(--txt3);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.msg.user .mm{justify-content:flex-end}
+.an{color:var(--acc2);font-weight:500}
+.bubble{padding:13px 17px;border-radius:var(--r);font-size:13.5px;line-height:1.68;white-space:pre-wrap;word-break:break-word}
+.msg.disha .bubble{background:linear-gradient(135deg,#1a1a50,#221250);border:1px solid var(--bd);border-bottom-left-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.msg.user .bubble{background:linear-gradient(135deg,#1a3a2a,#0f2a1f);border:1px solid rgba(74,222,128,.14);border-bottom-right-radius:4px}
+.typ{display:flex;align-self:flex-start}
+.typb{padding:14px 18px;background:linear-gradient(135deg,#1a1a50,#221250);border:1px solid var(--bd);border-radius:var(--r);border-bottom-left-radius:4px;display:flex;align-items:center;gap:5px}
+.td{width:7px;height:7px;border-radius:50%;background:var(--acc);animation:tb 1.2s infinite}
+.td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
+@keyframes tb{0%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-6px);opacity:1}}
+.tl{font-size:10.5px;color:var(--txt3);margin-left:4px;font-style:italic}
+.done-b{padding:12px 18px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.25);border-radius:var(--r2);text-align:center;font-size:12.5px;color:var(--green);display:flex;align-items:center;justify-content:center;gap:8px}
+.err-b{padding:12px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:var(--r2);font-size:12.5px;color:var(--red);text-align:center}
+.input-area{padding:16px 22px;background:var(--bg2);border-top:1px solid var(--bd2);flex-shrink:0}
+.iw{display:flex;gap:10px;align-items:flex-end;background:var(--bg4);border:1px solid var(--bd);border-radius:var(--r);padding:11px 15px;transition:border-color .2s,box-shadow .2s}
+.iw:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-g)}
+#inp{flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-size:13.5px;font-family:inherit;resize:none;max-height:110px;min-height:22px;line-height:1.5}
+#inp::placeholder{color:var(--txt3)} #inp:disabled{opacity:.5}
+.sb{width:36px;height:36px;background:linear-gradient(135deg,var(--acc),#a855f7);border:none;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .2s,transform .1s;flex-shrink:0}
+.sb:hover{opacity:.88;transform:scale(1.05)} .sb:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.sb svg{width:17px;height:17px;fill:#fff}
+.hint{font-size:10.5px;color:var(--txt3);text-align:center;margin-top:9px}
+@media(max-width:700px){.app{grid-template-columns:1fr}.sidebar{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">🧭</div>
+    <div><h1>Disha AI</h1><p>Life Navigation</p></div>
+  </div>
+  <button class="new-btn" onclick="newSession()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    New Conversation
+  </button>
+  <div><div class="sl">Quick Start</div>
+  <div class="qs">
+    <button class="qs-btn" onclick="qs(this.dataset.m)" data-m="10th ke baad confused hoon — Science loon, Commerce loon ya kuch aur? Maharashtra se hoon.">📚 After Class 10</button>
+    <button class="qs-btn" onclick="qs(this.dataset.m)" data-m="12th ho gayi, JEE rank acha nahi tha. Ab kya karoon? SC category hoon.">🎓 After Class 12</button>
+    <button class="qs-btn" onclick="qs(this.dataset.m)" data-m="Final year BE AI Data Science mein hoon, Mumbai se. GATE karoon ya placement? SC category. Bahut stressed hoon.">🏫 Final Year College</button>
+    <button class="qs-btn" onclick="qs(this.dataset.m)" data-m="Graduation 2 saal pehle ho gayi par koi direction nahi hai. Bilkul lost hoon. Kya karoon?">😕 Lost After Graduation</button>
+    <button class="qs-btn" onclick="qs(this.dataset.m)" data-m="Honestly mujhe pata nahi mujhe kya pasand hai. Sab try kiya kuch suit nahi kiya.">❓ No Interest / Direction</button>
+    <button class="qs-btn" onclick="qs(this.dataset.m)" data-m="Main kaam kar raha hoon par field switch karna chahta hoon. Kahan se shuru karoon?">💼 Working, Want Switch</button>
+  </div></div>
+  <div><div class="sl">Languages</div>
+  <div class="lps">
+    <span class="lp">Hindi</span><span class="lp">Marathi</span><span class="lp">Tamil</span>
+    <span class="lp">Telugu</span><span class="lp">Bengali</span><span class="lp">Gujarati</span>
+    <span class="lp">Kannada</span><span class="lp">Punjabi</span><span class="lp">Malayalam</span>
+    <span class="lp">English</span><span class="lp">Hinglish</span>
+  </div></div>
+  <div class="stats">
+    <div class="sl">Impact</div>
+    <div class="stat"><span class="stat-l">Students without guidance</span><span class="stat-v">225M</span></div>
+    <div class="stat"><span class="stat-l">Cost to use</span><span class="stat-v">RS 0</span></div>
+    <div class="stat"><span class="stat-l">AI Agents</span><span class="stat-v">6</span></div>
+    <div class="stat"><span class="stat-l">Framework</span><span class="stat-v">ADK 2.0</span></div>
+    <div class="stat"><span class="stat-l">Model</span><span class="stat-v">Gemini 2.5</span></div>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div class="tb-l">
+      <div class="dot idle" id="dot"></div>
+      <div><div class="tb-title">Disha AI</div><div class="tb-sub" id="tsub">Click New Conversation to begin</div></div>
+    </div>
+    <div class="badge" id="badge">Ready</div>
+  </div>
+  <div class="msgs" id="msgs">
+    <div class="welcome" id="welcome">
+      <div class="wi">🧭</div>
+      <div class="wt">Namaste! Main Disha hoon.</div>
+      <div class="wd">Your personal AI life navigation companion. I guide Indian students at every crossroads — one honest question at a time, in your language.</div>
+      <div class="ws"><strong>225 million</strong> Indian students have no career guidance. I am here for all of them.</div>
+      <div class="wh">Click a Quick Start button on the left, or type below</div>
+    </div>
+  </div>
+  <div class="input-area">
+    <div class="iw">
+      <textarea id="inp" rows="1" placeholder="Type in any language — Hindi, English, Marathi, Tamil, or any mix..." onkeydown="onKey(event)" oninput="rsz(this)" disabled></textarea>
+      <button class="sb" id="sb" onclick="send()" disabled>
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="hint">Enter to send  |  Shift+Enter for new line  |  Disha responds in your language</div>
+  </div>
+</main>
+</div>
+<script>
+var SID=null,busy=false;
+var AMAP={stage_router:"🎯 Disha — Understanding You",interest_discovery:"💡 Disha — Discovering Interests",knowledge_gap_fixer:"📖 Disha — Knowledge Expert",india_opportunity_finder:"🔍 Disha — Finding Opportunities",path_architect:"🗺️ Disha — Path Architect",antigravity_coach:"🚀 Disha — First Step Coach",disha_coordinator:"🧭 Disha"};
+var BMAP={stage_router:"Understanding You",interest_discovery:"Discovering Interests",knowledge_gap_fixer:"Knowledge Expert",india_opportunity_finder:"Finding Opportunities",path_architect:"Designing Paths",antigravity_coach:"First Step Coach",disha_coordinator:"Disha Active"};
+
+async function newSession(){
+  setS("thinking","Creating session...");
+  try{
+    var r=await fetch("/api/session/new",{method:"POST"});
+    var d=await r.json();
+    SID=d.session_id;
+    clearM();enableI();
+    setS("ready","Session active");
+    setBadge("disha_coordinator");
+    await sendTo("Hi Disha");
+  }catch(e){setS("idle","Cannot connect — is server.py running?");addErr("Server not reachable. Run: python server.py");}
+}
+
+async function qs(msg){
+  await newSession();
+  setTimeout(function(){document.getElementById("inp").value=msg;send();},200);
+}
+
+async function send(){
+  var inp=document.getElementById("inp");
+  var txt=inp.value.trim();
+  if(!txt||busy||!SID)return;
+  inp.value="";rsz(inp);
+  addMsg("user",txt,"You");
+  await sendTo(txt);
+}
+
+async function sendTo(txt){
+  busy=true;setS("thinking","Disha is thinking...");
+  document.getElementById("sb").disabled=true;
+  showTyp();
+  try{
+    var res=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:SID,message:txt})});
+    if(!res.ok)throw new Error(res.status);
+    var reader=res.body.getReader();
+    var dec=new TextDecoder();
+    var buf="",curEl=null,curAg="",curTxt="";
+    while(true){
+      var x=await reader.read();
+      if(x.done)break;
+      buf+=dec.decode(x.value,{stream:true});
+      var lines=buf.split("
+");buf=lines.pop();
+      for(var i=0;i<lines.length;i++){
+        var line=lines[i];
+        if(!line.startsWith("data: "))continue;
+        try{
+          var ev=JSON.parse(line.slice(6));
+          if(ev.type==="chunk"){
+            removeTyp();
+            if(!curEl||curAg!==ev.agent){curEl=makeBubble(ev.agent);curAg=ev.agent;curTxt="";}
+            curTxt+=(curTxt?"
+
+":"")+ev.text;
+            updBubble(curEl,curTxt);
+            setBadge(ev.agent);
+          }else if(ev.type==="status"){
+            setS("thinking",ev.text);
+          }else if(ev.type==="done"){
+            if(ev.is_complete){showDone();disableI();}
+          }else if(ev.type==="error"){
+            removeTyp();addErr(ev.text);
+          }
+        }catch(_){}
+      }
+    }
+  }catch(e){removeTyp();addErr("Connection lost. Please refresh.");}
+  busy=false;setS("ready","Listening...");
+  document.getElementById("sb").disabled=false;
+  document.getElementById("inp").focus();
+  scrollB();
+}
+
+function addMsg(role,text,agent){
+  var m=document.getElementById("msgs");
+  var d=document.createElement("div");d.className="msg "+role;
+  var n=role==="user"?"You":(AMAP[agent]||"🧭 Disha");
+  var t=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
+  d.innerHTML="<div class="mm"><span class="an">"+ n +"</span><span>"+ t +"</span></div><div class="bubble">"+esc(text)+"</div>";
+  m.appendChild(d);scrollB();return d;
+}
+
+function makeBubble(agent){
+  var m=document.getElementById("msgs");
+  var d=document.createElement("div");d.className="msg disha";d.dataset.ag=agent;
+  var n=AMAP[agent]||"🧭 Disha";
+  var t=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
+  d.innerHTML="<div class="mm"><span class="an">"+n+"</span><span>"+t+"</span></div><div class="bubble"></div>";
+  m.appendChild(d);scrollB();return d;
+}
+
+function updBubble(el,text){var b=el.querySelector(".bubble");if(b){b.textContent=text;scrollB();}}
+function showTyp(){removeTyp();var m=document.getElementById("msgs");var d=document.createElement("div");d.className="typ";d.id="typ";d.innerHTML="<div class="typb"><div class="td"></div><div class="td"></div><div class="td"></div><span class="tl">Disha is thinking...</span></div>";m.appendChild(d);scrollB();}
+function removeTyp(){var e=document.getElementById("typ");if(e)e.remove();}
+function showDone(){var m=document.getElementById("msgs");var d=document.createElement("div");d.className="done-b";d.textContent="Session complete — Disha has given you your path and first step. Start a new conversation anytime.";m.appendChild(d);scrollB();}
+function addErr(txt){var m=document.getElementById("msgs");var d=document.createElement("div");d.className="err-b";d.textContent=txt;m.appendChild(d);scrollB();}
+function clearM(){var m=document.getElementById("msgs");m.innerHTML="";}
+function enableI(){document.getElementById("inp").disabled=false;document.getElementById("sb").disabled=false;document.getElementById("inp").focus();}
+function disableI(){document.getElementById("inp").disabled=true;document.getElementById("sb").disabled=true;}
+function setS(type,text){var d=document.getElementById("dot");d.className="dot "+(type==="thinking"?"thinking":type==="ready"?"":"idle");document.getElementById("tsub").textContent=text;}
+function setBadge(a){document.getElementById("badge").textContent=BMAP[a]||"Disha Active";}
+function scrollB(){var m=document.getElementById("msgs");m.scrollTop=m.scrollHeight;}
+function esc(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/
+/g,"<br>");}
+function rsz(el){el.style.height="auto";el.style.height=Math.min(el.scrollHeight,110)+"px";}
+function onKey(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send();}}
+</script>
+</body>
+</html>

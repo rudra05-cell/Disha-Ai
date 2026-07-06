@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+disha_agent/memory_store/*.json
+*.db
+.DS_Store
